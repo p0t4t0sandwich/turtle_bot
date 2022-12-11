@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@cubecoders/ampapi": "^1.0.1",
+    "@supabase/supabase-js": "^2.1.1",
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "ws": "^8.11.0"
+  }
+}
