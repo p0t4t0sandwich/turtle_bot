@@ -89,22 +89,32 @@ async def turtle_image(status):
     return image
 
 async def get_image(status) -> None:
-    import supabase_interface
     from io import BytesIO
 
-    image = await supabase_interface.turtle_image(status)
+    image = await turtle_image(status)
 
     with BytesIO() as image_binary:
         image.save(image_binary, 'PNG')
         image_binary.seek(0)
         return discord.File(fp=image_binary, filename='image.png')
 
-async def get_embed(text) -> discord.Embed | discord.File:
+async def get_embed(status) -> discord.Embed | discord.File:
     # Init variables
     image = f"attachment://image.png"
+    fuel = status["fuel"]
+    x_pos = status["x_pos"]
+    y_pos = status["y_pos"]
+    z_pos = status["z_pos"]
 
-    title = f"Turtle Test"
-    description = f"{text}"
+    facing = status["facing"]
+
+    if facing == 0: facing = "North"
+    elif facing == 270: facing = "East"
+    elif facing == 180: facing = "South"
+    elif facing == 90: facing = "West"
+
+    title = f"Turtle Bot"
+    description = f"Fuel: {fuel}\nPosition: {x_pos}, {y_pos}, {z_pos}\nFacing: {facing}"
 
     # Add Colour
     color = 0x65bf65
@@ -112,7 +122,7 @@ async def get_embed(text) -> discord.Embed | discord.File:
     # Output Discord Embed object
     embed = discord.Embed(title=title, description=description, color=color)
     embed.set_image(url=image)
-    file = await get_image(text)
+    file = await get_image(status)
 
     return (embed, file)
 

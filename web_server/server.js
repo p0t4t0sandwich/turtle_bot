@@ -234,13 +234,18 @@ export async function get_turtle(label) {
 }
 
 async function get_block(x, y, z) {
-    const { data: block, error } = await supabase
-        .from('world')
-        .select('*')
-        .eq("x_pos", x)
-        .eq("y_pos", y)
-        .eq("z_pos", z)
-    return block[0];
+    try {
+        const { data: block, error } = await supabase
+            .from('world')
+            .select('*')
+            .eq("x_pos", x)
+            .eq("y_pos", y)
+            .eq("z_pos", z)
+        return block[0];
+    } catch (err) {
+        console.log(err);
+        return { block: "minecraft:air" };
+    }
 }
 
 async function get_value(block) {
